@@ -24,14 +24,11 @@ ruleset com.wccargo.tracking {
       href = eci => <</sky/cloud/#{eci}/com.wccargo.order/index.html>> | null
       href => <<<a href="#{href}">#{o}</a> >> | o
     }
-    to_sequence = function(h,o){
-      h => h + " " + o | o
-    }
     index = function(){
       html:header("World Connections Tracking Information")
       + <<<h1>Tracking Services</h1>
 >>
-      + orders().sort().map(eci_mapper).reduce(to_sequence,"")
+      + orders().sort().map(eci_mapper).join(" ")
       + html:footer()
     }
   }
