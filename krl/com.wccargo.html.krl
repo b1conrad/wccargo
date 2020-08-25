@@ -44,7 +44,7 @@ body {
 -->
 
 </style>
-    <link href="http://wccargo.com/styles.css" rel="stylesheet" type="text/css" />
+    <link href="//wccargo.com/styles.css" rel="stylesheet" type="text/css" />
 #{scripts.defaultsTo("")}
 <style type="text/css">
 
@@ -113,12 +113,12 @@ h4 {
 
   <tr>
 
-    <td><a href="http://wccargo.com/index.html"><div class="logo"></div></a></div><!-- #BeginLibraryItem "/Library/topmenu.lbi" -->    
-<link href="http://wccargo.com/styles.css" rel="stylesheet" type="text/css">
+    <td><a href="//wccargo.com/index.html"><div class="logo"></div></a></div><!-- #BeginLibraryItem "/Library/topmenu.lbi" -->    
+<link href="//wccargo.com/styles.css" rel="stylesheet" type="text/css">
 
 <div class="top_menu_back">
 
-      <div class="buttonmenu"><a href="http://wccargo.com/company.html" >Company</a> <a href="http://wccargo.com/services.html">Services</a> <a href="http://wccargo.com/projects.html" >Expo Logistics</a> <a href="http://wccargo.com/contact.html" >Contact Us</a></div>
+      <div class="buttonmenu"><a href="//wccargo.com/company.html" >Company</a> <a href="//wccargo.com/services.html">Services</a> <a href="//wccargo.com/projects.html" >Expo Logistics</a> <a href="//wccargo.com/contact.html" >Contact Us</a></div>
 
     </div><!-- #EndLibraryItem --><table width="822" border="0" align="left" cellpadding="0" cellspacing="0">
 
@@ -136,9 +136,9 @@ h4 {
             
             <div class="blueblock"><ul>
                            
-               <li><a href="http://wccargo.com/contact.html">Contact</a></li>
+               <li><a href="//wccargo.com/contact.html">Contact</a></li>
               
-              <li><a href="http://wccargo.com/alliances.html">Licenses and Authorizations</a></li>
+              <li><a href="//wccargo.com/alliances.html">Licenses and Authorizations</a></li>
               
               
               </ul></div>
@@ -149,7 +149,7 @@ h4 {
     }
     footer = function() {
       <<   </td></tr></table><!-- #BeginLibraryItem "/Library/foot.lbi" -->
-<link href="http://wccargo.com/styles.css" rel="stylesheet" type="text/css">
+<link href="//wccargo.com/styles.css" rel="stylesheet" type="text/css">
 <tr>
 
           <td height="20" colspan="2" valign="top" bgcolor="#FFFFFF"><div class="footer"><p>
