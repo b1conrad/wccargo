@@ -9,12 +9,24 @@ ruleset com.wccargo.order {
       [ { "name": "__testing" }
       , { "name": "index", "args": [ "id" ] }
       ] , "events":
-      [ //{ "domain": "d1", "type": "t1" }
+      [ { "domain": "order", "type": "new_status", "attrs": [ "url" ] }
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
     }
     index = function(id){
-      order:index(wrangler:name() || id)
+      order:index(wrangler:name() || id,ent:status)
+    }
+  }
+  rule update_status {
+    select when order new_status
+      url re#^(.+)$# setting(url)
+    pre {
+      status = http:get(url){"content"}
+        .klog("status")
+    }
+    send_directive("status",{"url":url,"status":status})
+    fired {
+      ent:status := status
     }
   }
 }
