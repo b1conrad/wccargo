@@ -17,6 +17,13 @@ ruleset com.wccargo.order {
       order:index(wrangler:name() || id,ent:status)
     }
   }
+  rule allocate_channel {
+    select when wrangler ruleset_added where event:attr("rids") >< meta:rid
+    if ent:status.isnull() then noop()
+    fired {
+      ent:status := <<No information available at this time.>>
+    }
+  }
   rule update_status {
     select when order new_status
       url re#^(.+)$# setting(url)
