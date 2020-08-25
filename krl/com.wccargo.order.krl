@@ -22,6 +22,9 @@ ruleset com.wccargo.order {
     if ent:status.isnull() then noop()
     fired {
       ent:status := <<No information available at this time.>>
+      raise wrangler event "channel_creation_requested" attributes {
+        "name": wrangler:name(), "type": "index"
+      }
     }
   }
   rule update_status {
