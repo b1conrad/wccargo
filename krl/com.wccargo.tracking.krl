@@ -17,10 +17,7 @@ ruleset com.wccargo.tracking {
       id => wrangler:children(id).head() | wrangler:children().map(function(o){o.get("name")})
     }
     eci_mapper = function(o){
-      eci = o == "308862" => "PxHMGFKaWqp93FyTxZtp6w" |
-            o == "308865" => "DeFUTENbJBya83SUPkgQHr" |
-            o == "308868" => "Ct48nmzYwsUuVj1tkDmU9j"
-            | null
+      eci = wrangler:children(o).head(){"eci"}
       href = eci => <</sky/cloud/#{eci}/com.wccargo.order/index.html>> | null
       href => <<<a href="#{href}">#{o}</a> >> | o
     }
