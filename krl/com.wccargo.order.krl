@@ -10,7 +10,7 @@ ruleset com.wccargo.order {
       , { "name": "index", "args": [ "id" ] }
       ] , "events":
       [ { "domain": "order", "type": "new_status", "attrs": [ "url" ] }
-      //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
+      , { "domain": "order", "type": "new_status", "attrs": [ "txt" ] }
       ]
     }
     index = function(id){
@@ -22,7 +22,6 @@ ruleset com.wccargo.order {
     if ent:status.isnull() then noop()
     fired {
       ent:status := <<No information available at this time.>>
-      }
     }
   }
   rule update_status {
@@ -33,6 +32,16 @@ ruleset com.wccargo.order {
         .klog("status")
     }
     send_directive("status",{"url":url,"status":status})
+    fired {
+      ent:status := status
+    }
+  }
+  rule update_status_from_txt {
+    select when order new_status where event:attr("txt")
+    pre {
+      status = event:attr("txt")
+    }
+    send_directive("status",{"status":status})
     fired {
       ent:status := status
     }
