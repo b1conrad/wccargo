@@ -16,17 +16,27 @@ ruleset com.wccargo.tracking {
     orders = function(id){
       id => wrangler:children(id).head() | wrangler:children().map(function(o){o.get("name")})
     }
-    eci_mapper = function(o){
-      eci = wrangler:children(o).head(){"eci"}
-      href = eci => <</sky/cloud/#{eci}/com.wccargo.order/index.html>> | null
-      href => <<<a href="#{href}">#{o}</a> >> | o
-    }
-    index = function(){
-      html:header("World Connections Tracking Information")
-      + <<<h1>Tracking Services</h1>
+    index = function(id){
+// form to accept order number
+      id.isnull() =>
+        html:header("World Connections Tracking Information")
+        + <<<h1>Tracking Services</h1>
 >>
-      + orders().sort().map(eci_mapper).join(" ")
-      + html:footer()
+        + <<<form id="orderno"><input name="id" placeholder="Order#"></form>
+>>
+        + <<e.x. #{orders().sort().join(", ")}
+<script type="text/javascript">
+document.getElementById('orderno').id.focus()
+</script>
+>>
+        + html:footer()
+// order number unknown
+      | orders(id).isnull() => html:header("World Connections Tracking Information")
+        + <<<h1>Order #{id} not found</h1>
+>>
+        +html:footer()
+// get page from order pico
+      | wrangler:skyQuery(orders(id).get("eci"),"com.wccargo.order","index")
     }
   }
 }
