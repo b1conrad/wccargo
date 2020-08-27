@@ -39,11 +39,12 @@ ruleset com.wccargo.order {
     select when order new_status
       url re#^(.+)$# setting(url)
     pre {
-      status = http:get(url){"content"}
-        .klog("status")
+      response = http:get(url)
+      status = response{"status_code"} == 200 => response{"content"} | response{"status_line"}
     }
     send_directive("status",{"url":url,"status":status})
     fired {
+      ent:lastResponse := response
       ent:status := status
     }
   }
