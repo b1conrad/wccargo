@@ -11,6 +11,7 @@ ruleset com.wccargo.order {
       ] , "events":
       [ { "domain": "order", "type": "new_status", "attrs": [ "url" ] }
       , { "domain": "order", "type": "new_status", "attrs": [ "txt" ] }
+      , { "domain": "order", "type": "new_status_check" }
       ]
     }
     index = function(id){
@@ -22,6 +23,16 @@ ruleset com.wccargo.order {
     if ent:status.isnull() then noop()
     fired {
       ent:status := <<No information available at this time.>>
+      raise order event "new_status_check"
+    }
+  }
+  rule check_for_updated_status {
+    select when order new_status_check
+    pre {
+      url = <<#{meta:host}/data/#{wrangler:name()}.txt>>
+    }
+    fired {
+      raise order event "new_status" attributes {"url":url}
     }
   }
   rule update_status {
