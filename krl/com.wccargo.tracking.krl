@@ -24,7 +24,7 @@ ruleset com.wccargo.tracking {
 >>
         + <<<form id="orderno"><input name="id" placeholder="Order#"></form>
 >>
-        + <<e.x. #{orders().sort().join(", ")}
+        + <<six digit number, including leading zeros
 <script type="text/javascript">
 document.getElementById('orderno').id.focus()
 </script>
