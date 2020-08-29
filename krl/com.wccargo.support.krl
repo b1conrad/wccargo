@@ -30,6 +30,9 @@ ruleset com.wccargo.support {
       + html:footer()
     }
   }
+//
+// event support:new_order from UI
+//
   rule guard_against_duplicates {
     select when support new_order id re#^(\d{6})$# setting(id)
     if orders(id) then send_directive("already exists",{"id":id})
@@ -50,16 +53,31 @@ ruleset com.wccargo.support {
   rule create_order_pico {
     select when support new_order id re#^(\d{6})$# setting(id)
     fired {
+      raise support event "new_order_ready" attributes {"id":id}
+    }
+  }
+  rule react_to_invalid_number {
+    select when support new_order
+    pre {
+      valid = event:attr("id").match(re#^\d{6}$#)
+    }
+    if not valid then
+      send_directive("order # must be six digit number",{"id":id})
+  }
+//
+// event support:new_order_ready when we can create the new order pico
+//
+  rule go_ahead_and_create_order_pico {
+    select when support new_order_ready id re#^(\d{6})$# setting(id)
+    fired {
       raise wrangler event "new_child_request" attributes {
         "name":id, "rids":"com.wccargo.order"
       }
-      last
     }
   }
-  rule catch_all {
-    select when support new_order
-    send_directive("order # must be six digit number")
-  }
+//
+// events support:orders_to_create and order_list_ready for importing
+//
   rule import_and_create_order_picos {
     select when support orders_to_create url re#^(http.+)# setting(url)
     pre {
@@ -83,7 +101,7 @@ ruleset com.wccargo.support {
     }
     if id then noop()
     fired {
-      raise support event "new_order" attributes {"id":id}
+      raise support event "new_order_ready" attributes {"id":id}
     }
   }
 }
