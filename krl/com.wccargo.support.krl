@@ -10,9 +10,10 @@ ruleset com.wccargo.support {
       //, { "name": "entry", "args": [ "key" ] }
       ] , "events":
       [ { "domain": "support", "type": "new_order", "attrs": [ "id" ] }
-      //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
+      , { "domain": "support", "type": "orders_to_create", "attrs": [ "url" ] }
       ]
     }
+    crlf = (13.chr() + "?" + 10.chr()).as("RegExp")
     orders = function(id){
       id => wrangler:children(id).head() | wrangler:children().map(function(o){o.get("name")})
     }
@@ -31,7 +32,7 @@ ruleset com.wccargo.support {
   }
   rule guard_against_duplicates {
     select when support new_order id re#^(\d{6})$# setting(id)
-    if orders(id) then send_directive("already exists")
+    if orders(id) then send_directive("already exists",{"id":id})
     fired {
       last
     }
@@ -58,5 +59,31 @@ ruleset com.wccargo.support {
   rule catch_all {
     select when support new_order
     send_directive("order # must be six digit number")
+  }
+  rule import_and_create_order_picos {
+    select when support orders_to_create url re#^(http.+)# setting(url)
+    pre {
+      response = http:get(url)
+      orders = response.get("status_code") == 200 => response.get("content") | null
+      order_list = orders => orders.split(crlf) | null
+    }
+    if orders then noop()
+    fired {
+      raise support event "order_list_ready" attributes {"orders":order_list}
+    }
+    finally {
+      ent:lastResponse := response
+    }
+  }
+  rule check_create_new_order_picos {
+    select when support order_list_ready
+    foreach event:attrs.get("orders") setting(o,i)
+    pre {
+      id = o.extract(re#^(\d{6})[.]txt$#).head()
+    }
+    if id then noop()
+    fired {
+      raise support event "new_order" attributes {"id":id}
+    }
   }
 }
