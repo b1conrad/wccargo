@@ -9,8 +9,10 @@
 1. register the rulesets in `krl` folder
 1. install `io.picolabs.account_management` ruleset in Root pico
 1. create a new owner pico named "Cargo Tracking" and record its login secret channel
+1. install in Cargo Tracking two rulesets `com.wccargo.tracking` and `com.wccargo.support`
 1. run DP report to generate orders `txt` files in `public` folder
 1. create `orders.txt` file in `public` folder
 1. in Testing tab for support ruleset, import the orders
-1. register a shortcut (using `io.picolabs.rewrite` ruleset in root pico) for "/com.wccargo.tracking" and an ECI of Cargo Tracking pico
+1. install `io.picolabs.rewrite` ruleset in root pico
+1. create a query shortcut for "/com.wccargo.tracking" and an ECI of Cargo Tracking
 
