@@ -98,8 +98,9 @@ ruleset com.wccargo.support {
     foreach event:attrs.get("orders") setting(o,i)
     pre {
       id = o.extract(re#^(\d{6})[.]txt$#).head()
+      already_exists = id && orders(id)
     }
-    if id then noop()
+    if id && not already_exists then noop()
     fired {
       raise support event "new_order_ready" attributes {"id":id}
     }
