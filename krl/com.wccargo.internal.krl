@@ -42,7 +42,7 @@ ruleset com.wccargo.internal {
       // order pico already exists
     } else {
       // have support ruleset create it
-      raise support event "create_order_pico" attributes {"id":id, "size":size}
+      raise support event "new_order_ready" attributes {"id":id, "size":size}
     }
   }
 }
