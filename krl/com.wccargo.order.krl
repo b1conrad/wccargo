@@ -17,20 +17,25 @@ ruleset com.wccargo.order {
     index = function(id){
       order:index(wrangler:name() || id,ent:status)
     }
+    no_information_msg = <<No information available at this time.>>
   }
-  rule allocate_channel {
+  rule initialize {
     select when wrangler ruleset_added where event:attr("rids") >< meta:rid
     if ent:status.isnull() then noop()
     fired {
-      ent:status := <<No information available at this time.>>
-      raise order event "new_status_check"
+      ent:status := no_information_msg
+      raise order event "new_status_check" attributes event:attrs
     }
   }
   rule check_for_updated_status {
     select when order new_status_check
     pre {
       url = <<#{meta:host}/data/#{wrangler:name()}.txt>>
+      size = event:attr("size")
+      new_status = ent:status == no_information_msg
+      larger_status = size.isnull() => false | size > ent:status.length()
     }
+    if new_status || larger_status then noop()
     fired {
       raise order event "new_status" attributes {"url":url}
     }

@@ -71,7 +71,7 @@ ruleset com.wccargo.support {
     select when support new_order_ready id re#^(\d{6})$# setting(id)
     fired {
       raise wrangler event "new_child_request" attributes {
-        "name":id, "rids":"com.wccargo.order"
+        "name":id, "rids":"com.wccargo.order", "size": event:attr("size")
       }
     }
   }

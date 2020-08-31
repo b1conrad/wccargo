@@ -22,5 +22,27 @@ ruleset com.wccargo.internal {
       size = event:attr("size")
     }
     send_directive("ack_file_changed",{"id":name,"size":size})
+    fired {
+      raise internal event "check_order_status" attributes {"id":name,"size":size}
+    }
+  }
+  rule check_for_order_pico {
+    select when internal check_order_status id re#^(\d{6})$# setting(id)
+    pre {
+      order_pico = orders(id).klog("order_pico")
+      order_pico_eci = order_pico.get("eci")
+      size = event:attr("size")
+    }
+    if order_pico_eci then
+      event:send({
+        "eci":order_pico_eci,"domain":"order","type":"new_status_check",
+        "attrs": {"size":size}
+      })
+    fired {
+      // order pico already exists
+    } else {
+      // have support ruleset create it
+      raise support event "create_order_pico" attributes {"id":id, "size":size}
+    }
   }
 }
