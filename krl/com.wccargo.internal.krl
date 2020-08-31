@@ -19,7 +19,7 @@ ruleset com.wccargo.internal {
   rule handle_file_changed {
     select when internal file_changed name re#public/data.(\d{6})[.]txt$# setting(name)
     pre {
-      size = event.attr("size")
+      size = event:attr("size")
     }
     send_directive("ack_file_changed",{"id":name,"size":size})
   }
