@@ -2,12 +2,13 @@ ruleset com.wccargo.order {
   meta {
     use module io.picolabs.wrangler alias wrangler
     use module com.wccargo.order.ui alias order
-    shares __testing, index
+    shares __testing, index, status
   }
   global {
     __testing = { "queries":
       [ { "name": "__testing" }
       , { "name": "index", "args": [ "id" ] }
+      , { "name": "status" }
       ] , "events":
       [ { "domain": "order", "type": "new_status", "attrs": [ "url" ] }
       , { "domain": "order", "type": "new_status", "attrs": [ "txt" ] }
@@ -16,6 +17,9 @@ ruleset com.wccargo.order {
     }
     index = function(id){
       order:index(wrangler:name() || id,ent:status)
+    }
+    status = function(){
+      ent:status
     }
     no_information_msg = <<No information available at this time.>>
   }
