@@ -64,7 +64,7 @@ the Javascript `watch-updates` program will send a `internal:file_changed` event
 to the owner pico.
 
 The owner pico, upon receiving the `internal:file_changed` event will
-determine whehter or not there is already an order pico for that order number.
+determine whether or not there is already an order pico for that order number.
 
 If there is no such pico, it will cause it to be created.
 Otherwise it will send a `order:new_status_check` event to the order pico.
