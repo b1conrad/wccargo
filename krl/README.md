@@ -1,8 +1,5 @@
 # Rulesets
 
-There are two sets of rulesets, one for the wccargo.com tracking project,
-and the other for the mastunited.com tracking project.
-
 ## wccargo
 
 ### com.wccargo.html
@@ -64,49 +61,4 @@ This ruleset is now deprecated, as customer service action was not wanted.
 The purpose of this ruleset is to react to changes in the filesystem,
 and to create order picos as needed.
 It is installed in the Cargo Tracking pico.
-
-## mastunited
-
-### com.mastunited.html
-
-This contains the "chrome" for the website in which a tracking page is embedded.
-It was obtained by copying the source code of the placeholder cargo tracking page
-and identifying the header (portion of HTML above the "coming soon" message) and
-the footer (portion of HTML after that).
-
-This ruleset is not installed in any pico, but is registered with the pico-eninge
-and used as a module by the tracking and order rulesets.
-
-### com.mastunited.tracking
-
-This is the main application.
-It will be installed in a single owner pico,
-which will have one child pico for each order that has updates.
-This collection of order picos is maintained as the array of `children` by the
-`io.picolabs.wrangler` ruleset.
-
-There are three kinds of pages produced (by the `index` function):
-
-1. The main tracking page, which contains a form prompting for the "Order#"
-1. A page reporting "Order #{id} not found"
-1. A page showing the "Tracking Services for order #{id}"
-
-Usage is that the client goes to the first page, enters an order number, and presses the Enter key.
-
-If the Cargo Tracking pico has an order pico named by the order number, the third page is displayed,
-but if there is no order pico of that name, the second page is displayed.
-
-### com.mastunited.order
-
-This ruleset must be installed in each order pico.
-
-### com.mastunited.internal
-
-This ruleset is installed in the single owner pico.
-
-Its purpose is to react to events caused by changes in the underlying filesystem.
-It will detect a change in the updates for an order number and either
-
-1. if no child order pico exists for that number, cause it to be created, or
-1. ask the child order pico to check for new updates
 
