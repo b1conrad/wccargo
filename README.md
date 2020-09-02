@@ -23,31 +23,6 @@
 others are done using the pico-engine UI through the ngrok subdomain
 unless otherwise indicated
 
-## plan for the mastunited production system
-
-The first six steps msut be done on the production server.
-
-Then use the `pico-engine` to register the four `com.mastunited.*` rulesets from the `krl` folder,
-follow step 8 above, and create a new owner pico (name TBD) and record its login secret channel.
-
-The rulesets `com.mastunited.tracking` and `com.mastunited.internal` are to be installed in the owner pico.
-
-The DataPerfect report (from the `DP` folder) is to be imported into the production database
-adjusted for panel number, etc.
-
-The Javascript file `watch-updates.js` is to be placed in the `npm\node_modules` folder
-and started in a CMD window with a command like this one:
-
-```
-node watch-updates.js <ECI>
-```
-
-where "&lt;ECI>" is replaced by the channel ID of a new channel 
-(create this manually in the Channel tab of the pico-engine UI for the owner pico).
-
-The last two steps (from the prototype setup above) should be adapted and done for
-the production system, to create a short URL for the tracking page.
-
 ## Principles of operation
 
 Customer service agents use the database to (among (many) other things) record
