@@ -13,18 +13,21 @@ ruleset com.wccargo.tracking {
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
     }
+    id_pattern = "[0-9]{6}" // for client side validation
+    id_reg_exp = re#^[0-9]{6}$# // for server side validation
     orders = function(id){
       id => wrangler:children(id).head() | wrangler:children().map(function(o){o.get("name")})
     }
     index = function(id){
+      invalid_input = id.isnull() || not id.match(id_reg_exp)
 // form to accept order number
-      id.isnull() =>
+      invalid_input =>
         html:header("World Connections Tracking Information")
         + <<<h1>Tracking Services</h1>
 >>
-        + <<<form id="orderno"><input name="id" placeholder="Order#" required pattern="[0-9]{6}"></form>
+        + <<<form id="orderno"><input name="id" placeholder="Order#" required pattern="#{id_pattern}"></form>
 >>
-        + <<six digit number, including leading zeros
+        + <<<span>six digit number, including leading zeros</span>
 <script type="text/javascript">
 document.getElementById('orderno').id.focus()
 </script>
