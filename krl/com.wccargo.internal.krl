@@ -27,11 +27,13 @@ ruleset com.wccargo.internal {
     }
   }
   rule check_for_order_pico {
-    select when internal check_order_status id re#^(\d{6})$# setting(id)
+    select when internal check_order_status
+      id re#^(\d{6})$#
+      size re#^([1-9]\d*)$# // ignore if zero
+      setting(id,size)
     pre {
       order_pico = orders(id).klog("order_pico")
       order_pico_eci = order_pico.get("eci")
-      size = event:attr("size")
     }
     if order_pico_eci then
       event:send({
