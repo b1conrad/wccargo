@@ -22,7 +22,7 @@ ruleset com.wccargo.tracking {
         html:header("World Connections Tracking Information")
         + <<<h1>Tracking Services</h1>
 >>
-        + <<<form id="orderno"><input name="id" placeholder="Order#"></form>
+        + <<<form id="orderno"><input name="id" placeholder="Order#" required pattern="[0-9]{6}"></form>
 >>
         + <<six digit number, including leading zeros
 <script type="text/javascript">
