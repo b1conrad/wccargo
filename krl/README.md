@@ -62,3 +62,14 @@ The purpose of this ruleset is to react to changes in the filesystem,
 and to create order picos as needed.
 It is installed in the Cargo Tracking pico.
 
+### com.wccargo.cleanup
+
+This ruleset was installed in the owner pico and used once,
+in an attempt to delete order picos with no updates.
+It was unsuccessful, although it did find all such order picos,
+the deletion of the first one failed,
+and the event episode ended without picos being deleted.
+Since the rules kept a list of these picos, we were able to delete
+them using a `bash` script generated from that list.
+See files `picos-to-delete.*` in this repo.
+
